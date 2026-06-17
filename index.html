@@ -572,16 +572,29 @@
 
   function startMusic() {
     var iframe = document.createElement('iframe');
+    // Önce mute=1 ile başlatıyoruz — iOS dahil her yerde autoplay çalışır
+    // Ardından 1.5sn sonra unmute ediyoruz (YT IFrame API postMessage)
     iframe.src = 'https://www.youtube.com/embed/u2ah9tWTkmk'
                + '?autoplay=1&loop=1&playlist=u2ah9tWTkmk'
-               + '&controls=0&mute=0&rel=0&playsinline=1&enablejsapi=1';
+               + '&controls=0&mute=1&rel=0&playsinline=1&enablejsapi=1';
     iframe.allow = 'autoplay; encrypted-media';
     iframe.setAttribute('playsinline', '1');
-    iframe.style.cssText = 'position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-1;top:0;left:0;';
+    // Gerçek boyut ama sayfa dışında — YouTube gizli embed algılamaz
+    iframe.style.cssText = 'position:fixed;width:320px;height:180px;'
+      + 'left:-9999px;top:-9999px;pointer-events:none;z-index:-1;';
     document.body.appendChild(iframe);
     musicIframe  = iframe;
     musicPlaying = true;
     document.getElementById('music-bar').classList.add('visible');
+    // YT player yüklendikten sonra sesi aç
+    setTimeout(function() {
+      if (musicIframe && musicIframe.contentWindow) {
+        musicIframe.contentWindow.postMessage(
+          JSON.stringify({event:'command', func:'unMute', args:[]}), '*');
+        musicIframe.contentWindow.postMessage(
+          JSON.stringify({event:'command', func:'setVolume', args:[80]}), '*');
+      }
+    }, 1800);
   }
 
   function toggleMusic() {
