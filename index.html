@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0D0906">
+  <title>Ahmet & Ayşe — Düğün Daveti</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,600&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --gold:   #C5A25A;
+      --goldd:  #8A6420;
+      --goldl:  #E8D5A3;
+      --cream:  #FAF7F1;
+      --cream2: #F0E8D6;
+      --text:   #2B1A08;
+      --sub:    #7A6040;
+      --border: rgba(197,162,90,0.25);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Raleway', sans-serif;
+      background: #0D0906;
+      color: var(--text);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ══════════════════════════════════════
+       OPENING OVERLAY
+    ══════════════════════════════════════ */
+    #overlay {
+      position: fixed; inset: 0; z-index: 9000;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      background: linear-gradient(155deg, #FAF7F1 0%, #EDE3CC 100%);
+      transition: transform 1.1s cubic-bezier(0.76, 0, 0.24, 1),
+                  opacity   1.1s ease;
+    }
+    #overlay.open { transform: translateY(-100%); opacity: 0; pointer-events: none; }
+
+    /* Dış çerçeve */
+    #overlay::before {
+      content: '';
+      position: absolute;
+      inset: 18px;
+      border: 1.2px solid rgba(197,162,90,0.65);
+      pointer-events: none;
+      z-index: 1;
+    }
+    /* İç çerçeve */
+    #overlay::after {
+      content: '';
+      position: absolute;
+      inset: 24px;
+      border: 0.6px solid rgba(197,162,90,0.35);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .o-card {
+      display: flex; flex-direction: column; align-items: center; gap: 24px;
+      padding: 52px 56px;
+      width: min(520px, calc(100% - 80px));
+      text-align: center;
+      border: 1px solid rgba(197,162,90,0.55);
+      outline: 1px solid rgba(197,162,90,0.25);
+      outline-offset: -7px;
+      position: relative; z-index: 2;
+    }
+    .o-small {
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 10px; letter-spacing: 6px; text-transform: uppercase; color: var(--gold);
+    }
+    .o-names {
+      font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300;
+      font-size: clamp(72px, 18vw, 110px); line-height: 0.88; color: var(--text);
+    }
+    .o-amp { font-style: italic; color: var(--gold); display: block; margin: 4px 0; font-size: 0.45em; }
+    .o-date {
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 11px; letter-spacing: 5px; color: var(--sub);
+    }
+    .seal { width: 72px; height: 72px; }
+    .seal-svg { animation: sealPulse 2.8s ease-in-out infinite; }
+    @keyframes sealPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50%       { transform: scale(0.95); opacity: 0.72; }
+    }
+    .tap-hint {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 15px; color: var(--sub);
+      animation: tapPulse 2.5s ease-in-out infinite;
+    }
+    @keyframes tapPulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+    .orn { display: block; margin: 0 auto; }
+
+    /* ══════════════════════════════════════
+       MAIN
+    ══════════════════════════════════════ */
+    #main { opacity: 0; transition: opacity 0.9s ease 0.15s; }
+    #main.visible { opacity: 1; }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      /* ↓ Kendi fotoğrafınızla değiştirin */
+      background: url('https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1920&q=80')
+                  center center / cover no-repeat;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(10, 7, 3, 0.54);
+    }
+    .hero-inner {
+      position: relative; z-index: 1;
+      text-align: center; padding: 80px 28px;
+      display: flex; flex-direction: column; align-items: center; gap: 22px;
+    }
+    .stars {
+      color: var(--gold); font-size: 12px; letter-spacing: 14px;
+    }
+    .hero-names {
+      font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300;
+      font-size: clamp(72px, 19vw, 116px);
+      line-height: 0.88; color: rgba(255,255,255,0.95);
+    }
+    .h-amp {
+      display: block; color: var(--gold);
+      font-size: 0.42em; font-weight: 400; margin: 6px 0;
+    }
+    .hero-line {
+      width: 70px; height: 1px; background: rgba(197,162,90,0.45);
+    }
+    .hero-date {
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 10px; letter-spacing: 6px; text-transform: uppercase;
+      color: rgba(255,255,255,0.58);
+    }
+
+    /* ── CONTENT ── */
+    .content { background: var(--cream); }
+
+    /* Tüm sayfa bölümleri için çerçeve wrapper */
+    .page-wrap {
+      position: relative;
+      margin: 32px 18px;
+      border: 1.2px solid rgba(197,162,90,0.6);
+      padding: 8px;
+    }
+    .page-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border: 0.5px solid rgba(197,162,90,0.28);
+      pointer-events: none;
+    }
+
+    /* hero padding bottom so floating btn clears */
+    .hero-inner { padding-bottom: 100px; }
+
+    /* scroll arrow */
+    .scroll-arrow {
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+      z-index: 2; color: rgba(197,162,90,0.6); font-size: 20px;
+      animation: bounce 2s ease-in-out infinite;
+    }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+
+    /* ── Section label ── */
+    .lbl {
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 9px; letter-spacing: 5px; text-transform: uppercase; color: var(--gold);
+    }
+
+    /* ── Hero names section ── */
+    .names-sect {
+      padding: 64px 24px 40px; text-align: center;
+      display: flex; flex-direction: column; align-items: center; gap: 14px;
+    }
+    .names-full {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: clamp(28px, 7vw, 42px); line-height: 1.2; color: var(--text);
+    }
+    .nf-amp { font-style: italic; color: var(--gold); display: block; margin: 2px 0; }
+    .evleniyor {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 18px; color: var(--sub);
+    }
+
+    /* ── Cards ── */
+    .section { padding: 20px 20px; max-width: 440px; margin: 0 auto; }
+
+    .card {
+      border: 1px solid var(--border); border-radius: 1px;
+      padding: 40px 28px; text-align: center;
+      display: flex; flex-direction: column; align-items: center; gap: 13px;
+      background: rgba(255,255,255,0.6);
+    }
+    .card.main { padding: 48px 32px; }
+    .card.kina { background: rgba(244,238,228,0.8); border-color: rgba(196,135,90,0.22); }
+
+    .card-tag {
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 8.5px; letter-spacing: 5px; text-transform: uppercase;
+    }
+    .card-tag.g  { color: var(--gold); }
+    .card-tag.kg { color: #C4875A; }
+
+    .card-date {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: 24px; color: var(--text); margin-top: 4px;
+    }
+    .card-date.lg { font-size: 30px; }
+
+    .card-time {
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 10px; letter-spacing: 4px; color: var(--sub);
+    }
+    .card-venue {
+      font-family: 'Cormorant Garamond', serif; font-weight: 400;
+      font-size: 18px; color: var(--text); line-height: 1.3; margin-top: 6px;
+    }
+    .card-venue.lg { font-size: 22px; }
+    .card-venue-sub {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 13px; color: var(--sub); margin-top: -4px;
+    }
+    .map-btn {
+      margin-top: 6px; display: inline-flex; align-items: center; gap: 8px;
+      padding: 11px 26px; border: 1px solid; border-radius: 1px;
+      font-family: 'Raleway', sans-serif; font-weight: 400;
+      font-size: 9.5px; letter-spacing: 3px; text-transform: uppercase;
+      text-decoration: none; transition: all 0.25s;
+    }
+    .map-btn.g  { border-color: var(--gold); color: var(--goldd); }
+    .map-btn.g:hover, .map-btn.g:active { background: var(--gold); color: white; }
+    .map-btn.kg { border-color: #C4875A; color: #7A4018; }
+    .map-btn.kg:hover, .map-btn.kg:active { background: #C4875A; color: white; }
+
+    /* ── Divider ── */
+    .divider {
+      display: flex; align-items: center; gap: 12px;
+      max-width: 280px; margin: 4px auto;
+    }
+    .dvl { flex:1; height:1px; background: var(--border); }
+    .dvd { width:6px; height:6px; background: var(--goldl); transform: rotate(45deg); }
+
+    /* ── Countdown ── */
+    .cd-wrap { padding: 44px 24px; text-align: center; max-width: 440px; margin: 0 auto; }
+    .cd-row {
+      display: flex; justify-content: center; gap: 8px; align-items: flex-start; margin-top: 20px;
+    }
+    .cd-unit { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+    .cd-num {
+      font-family: 'Cormorant Garamond', serif; font-weight: 300;
+      font-size: clamp(34px, 8vw, 46px); line-height: 1;
+      color: var(--text); min-width: 50px; text-align: center;
+    }
+    .cd-lbl {
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--sub);
+    }
+    .cd-sep { font-family: 'Cormorant Garamond', serif; font-size: 38px; color: var(--goldl); line-height:1; padding-top:2px; }
+
+    /* ══════════════════════════════════════
+       RSVP
+    ══════════════════════════════════════ */
+    .rsvp {
+      padding: 72px 24px 80px;
+      background: var(--cream2);
+      text-align: center;
+    }
+    .rsvp-title {
+      font-family: 'Cormorant Garamond', serif; font-weight: 400;
+      font-size: clamp(36px, 9vw, 52px); color: var(--text);
+      margin: 12px 0 8px;
+    }
+    .rsvp-sub {
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 13px; color: var(--sub); line-height: 1.6; margin-bottom: 40px;
+    }
+    .rsvp-form {
+      max-width: 480px; margin: 0 auto;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .rsvp-input, .rsvp-select {
+      width: 100%; padding: 15px 18px;
+      border: 1px solid rgba(197,162,90,0.3);
+      background: white; border-radius: 1px;
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 14px; color: var(--text);
+      outline: none; appearance: none; -webkit-appearance: none;
+      transition: border-color 0.2s;
+    }
+    .rsvp-input::placeholder { color: #C4B090; }
+    .rsvp-input:focus, .rsvp-select:focus { border-color: var(--gold); }
+    .rsvp-select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C5A25A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; padding-right: 40px; cursor: pointer; }
+    .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .rsvp-btn {
+      padding: 16px; background: var(--goldd); color: white;
+      border: none; cursor: pointer; border-radius: 1px;
+      font-family: 'Raleway', sans-serif; font-weight: 400;
+      font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+      transition: background 0.25s;
+    }
+    .rsvp-btn:hover, .rsvp-btn:active { background: var(--gold); }
+    #rsvp-done {
+      display: none; padding: 32px 16px;
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 20px; color: var(--goldd);
+    }
+
+    /* ── Footer ── */
+    .footer {
+      padding: 40px 24px 60px; text-align: center;
+      display: flex; flex-direction: column; align-items: center; gap: 18px;
+      background: var(--cream);
+    }
+    .footer-text {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 17px; color: var(--sub);
+    }
+
+    /* ══════════════════════════════════════
+       MÜZİK ÇUBUĞU (alt)
+    ══════════════════════════════════════ */
+    #music-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; height: 48px;
+      background: rgba(250,247,241,0.95);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      z-index: 2000;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.6s ease;
+    }
+    #music-bar.visible { opacity: 1; pointer-events: all; }
+    .m-note { font-size: 15px; color: var(--gold); animation: noteFloat 1.8s ease-in-out infinite; }
+    @keyframes noteFloat { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-3px)} }
+    .m-info { font-family:'Raleway',sans-serif; font-weight:300; font-size:10px; color:var(--sub); letter-spacing:1.5px; }
+    #m-toggle { background:none; border:none; cursor:pointer; font-size:15px; color:var(--gold); padding:4px 8px; }
+
+    /* ── Fade-up ── */
+    .fu { opacity:0; transform:translateY(22px); transition: opacity 0.75s ease, transform 0.75s ease; }
+    .fu.in { opacity:1; transform:translateY(0); }
+  </style>
+</head>
+
+<body>
+
+<!-- ══════════════════════════════════════
+     OPENING OVERLAY
+══════════════════════════════════════ -->
+<div id="overlay">
+  <div class="o-card">
+    <span class="o-small">Mersin &nbsp;·&nbsp; 2026</span>
+
+    <svg class="orn" width="130" height="16" viewBox="0 0 130 16">
+      <line x1="0" y1="8" x2="54" y2="8" stroke="#C5A25A" stroke-width="0.6"/>
+      <polygon points="65,1 72,8 65,15 58,8" fill="#C5A25A"/>
+      <line x1="76" y1="8" x2="130" y2="8" stroke="#C5A25A" stroke-width="0.6"/>
+    </svg>
+
+    <div class="o-names">
+      Ahmet
+      <span class="o-amp">&</span>
+      Ayşe
+    </div>
+
+    <span class="o-date">26 &nbsp;·&nbsp; 09 &nbsp;·&nbsp; 2026</span>
+
+    <div class="seal">
+      <svg class="seal-svg" viewBox="0 0 80 80" fill="none">
+        <circle cx="40" cy="40" r="38" stroke="#C5A25A" stroke-width="0.8"/>
+        <circle cx="40" cy="40" r="33" fill="#C5A25A"/>
+        <text x="40" y="37" text-anchor="middle" font-family="Cormorant Garamond,serif" font-style="italic" font-size="14" fill="rgba(255,255,255,0.95)">A</text>
+        <text x="40" y="51" text-anchor="middle" font-family="Cormorant Garamond,serif" font-style="italic" font-size="11" fill="rgba(255,255,255,0.75)">&amp; A</text>
+      </svg>
+    </div>
+
+    <svg class="orn" width="130" height="16" viewBox="0 0 130 16">
+      <line x1="0" y1="8" x2="54" y2="8" stroke="#C5A25A" stroke-width="0.6"/>
+      <polygon points="65,1 72,8 65,15 58,8" fill="#C5A25A"/>
+      <line x1="76" y1="8" x2="130" y2="8" stroke="#C5A25A" stroke-width="0.6"/>
+    </svg>
+
+    <span class="tap-hint">♪ &ensp; Daveti açmak için dokunun</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     MAIN
+══════════════════════════════════════ -->
+<div id="main">
+
+
+  <!-- CONTENT -->
+  <div class="content">
+   <div class="page-wrap">
+
+    <!-- Names full -->
+    <div class="names-sect fu">
+      <span class="lbl">Düğün Daveti</span>
+      <svg class="orn" width="180" height="16" viewBox="0 0 180 16">
+        <line x1="0" y1="8" x2="76" y2="8" stroke="#C5A25A" stroke-width="0.6"/>
+        <polygon points="90,1 97,8 90,15 83,8" fill="#C5A25A"/>
+        <line x1="104" y1="8" x2="180" y2="8" stroke="#C5A25A" stroke-width="0.6"/>
+      </svg>
+      <div class="names-full">
+        Ahmet Çiçek
+        <span class="nf-amp">&</span>
+        Ayşe Şevval Kamiloğlu
+      </div>
+      <span class="evleniyor">evleniyor</span>
+      <svg class="orn" width="180" height="16" viewBox="0 0 180 16">
+        <line x1="0" y1="8" x2="76" y2="8" stroke="#C5A25A" stroke-width="0.6"/>
+        <polygon points="90,1 97,8 90,15 83,8" fill="#C5A25A"/>
+        <line x1="104" y1="8" x2="180" y2="8" stroke="#C5A25A" stroke-width="0.6"/>
+      </svg>
+    </div>
+
+    <!-- Düğün Card -->
+    <div class="section fu">
+      <div class="card main">
+        <span class="card-tag g">Düğün</span>
+        <svg class="orn" width="120" height="14" viewBox="0 0 120 14">
+          <line x1="0" y1="7" x2="49" y2="7" stroke="#C5A25A" stroke-width="0.5"/>
+          <polygon points="60,1 66,7 60,13 54,7" fill="#C5A25A"/>
+          <line x1="71" y1="7" x2="120" y2="7" stroke="#C5A25A" stroke-width="0.5"/>
+        </svg>
+        <div class="card-date lg">26 Eylül 2026</div>
+        <span class="card-time">S A A T &ensp; 1 9 : 0 0</span>
+        <div class="card-venue lg">Sirius City Wedding</div>
+        <div class="card-venue-sub">Mersin Kır Düğünü Salonu</div>
+        <a class="map-btn g" href="https://maps.app.goo.gl/uoVn582NTPAe8RPc9" target="_blank">◆ &ensp; Haritayı Gör</a>
+      </div>
+    </div>
+
+    <div class="divider"><div class="dvl"></div><div class="dvd"></div><div class="dvl"></div></div>
+
+    <!-- Kına Card -->
+    <div class="section fu">
+      <div class="card kina">
+        <span class="card-tag kg">Kına Gecesi</span>
+        <svg class="orn" width="120" height="14" viewBox="0 0 120 14">
+          <line x1="0" y1="7" x2="49" y2="7" stroke="#C4875A" stroke-width="0.5"/>
+          <polygon points="60,1 66,7 60,13 54,7" fill="#C4875A"/>
+          <line x1="71" y1="7" x2="120" y2="7" stroke="#C4875A" stroke-width="0.5"/>
+        </svg>
+        <div class="card-date">02 Ağustos 2026</div>
+        <span class="card-time">S A A T &ensp; 1 9 : 0 0</span>
+        <div class="card-venue">Bekirağa Kıran Küme Evleri</div>
+        <div class="card-venue-sub">Kına Mekanı</div>
+        <a class="map-btn kg" href="https://maps.app.goo.gl/kp5vzUCe3hHzFEda7" target="_blank">◆ &ensp; Haritayı Gör</a>
+      </div>
+    </div>
+
+    <!-- Countdown -->
+    <div class="cd-wrap fu">
+      <span class="lbl">Düğüne kalan</span>
+      <div class="cd-row">
+        <div class="cd-unit"><span class="cd-num" id="cd-d">--</span><span class="cd-lbl">Gün</span></div>
+        <span class="cd-sep">·</span>
+        <div class="cd-unit"><span class="cd-num" id="cd-h">--</span><span class="cd-lbl">Saat</span></div>
+        <span class="cd-sep">·</span>
+        <div class="cd-unit"><span class="cd-num" id="cd-m">--</span><span class="cd-lbl">Dakika</span></div>
+        <span class="cd-sep">·</span>
+        <div class="cd-unit"><span class="cd-num" id="cd-s">--</span><span class="cd-lbl">Saniye</span></div>
+      </div>
+    </div>
+
+   </div><!-- /page-wrap -->
+  </div><!-- /content -->
+
+  <!-- RSVP -->
+  <div style="background:var(--cream2); padding: 0 0 8px;">
+  <div class="page-wrap" style="margin-top:0; background:var(--cream2);">
+  <section class="rsvp fu" style="margin:0; padding: 56px 24px 64px;">
+    <span class="lbl">Katılım Onayı</span>
+    <h2 class="rsvp-title">Katılıyor musunuz?</h2>
+    <p class="rsvp-sub">
+      Lütfen 7 Eylül 2026 tarihinden önce<br>katılım durumunuzu onaylayınız.
+    </p>
+
+    <div class="rsvp-form" id="rsvp-form">
+      <input class="rsvp-input" id="rv-name" type="text" placeholder="Ad Soyad *" required>
+      <div class="row-2">
+        <input class="rsvp-input" id="rv-count" type="number" min="1" max="20" value="1" placeholder="Kişi Sayısı">
+        <select class="rsvp-select" id="rv-status">
+          <option value="">-- Katılım Durumu --</option>
+          <option value="✓ Katılacağım">✓ Katılacağım</option>
+          <option value="✗ Katılamayacağım">✗ Katılamayacağım</option>
+          <option value="? Belki Katılabilirim">? Belki Katılabilirim</option>
+        </select>
+      </div>
+      <textarea class="rsvp-input" id="rv-note" rows="3" placeholder="Notunuz (isteğe bağlı)" style="resize:none"></textarea>
+      <button class="rsvp-btn" onclick="sendRSVP()">O N A Y I &nbsp; G Ö N D E R</button>
+    </div>
+
+    <div id="rsvp-done">
+      ✦ &ensp; Teşekkürler, kaydınız alındı. Görüşmek üzere! &ensp; ✦
+    </div>
+  </section>
+
+  </section>
+  </div><!-- /page-wrap rsvp -->
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer fu">
+    <svg class="orn" width="180" height="16" viewBox="0 0 180 16">
+      <line x1="0" y1="8" x2="76" y2="8" stroke="#C5A25A" stroke-width="0.6"/>
+      <polygon points="90,1 97,8 90,15 83,8" fill="#C5A25A"/>
+      <line x1="104" y1="8" x2="180" y2="8" stroke="#C5A25A" stroke-width="0.6"/>
+    </svg>
+    <p class="footer-text">Sevgi ve mutlulukla davet ediyoruz.</p>
+    <svg class="orn" width="180" height="16" viewBox="0 0 180 16">
+      <line x1="0" y1="8" x2="76" y2="8" stroke="#C5A25A" stroke-width="0.6"/>
+      <polygon points="90,1 97,8 90,15 83,8" fill="#C5A25A"/>
+      <line x1="104" y1="8" x2="180" y2="8" stroke="#C5A25A" stroke-width="0.6"/>
+    </svg>
+  </footer>
+
+</div><!-- /main -->
+
+<!-- Müzik Çubuğu -->
+<div id="music-bar">
+  <span class="m-note">♩</span>
+  <span class="m-info">Ordinary &ensp;—&ensp; Alex Warren</span>
+  <button id="m-toggle" onclick="toggleMusic()">⏸</button>
+</div>
+
+<script>
+  /* ══ RSVP → WhatsApp ══ */
+  var WA_NUMBER = '905XXXXXXXXX'; // ← telefon numaranızı buraya girin
+
+  function sendRSVP() {
+    var name   = document.getElementById('rv-name').value.trim();
+    var count  = document.getElementById('rv-count').value || '1';
+    var status = document.getElementById('rv-status').value;
+    var note   = document.getElementById('rv-note').value.trim();
+    if (!name)   { alert('Lütfen adınızı girin.'); return; }
+    if (!status) { alert('Lütfen katılım durumunuzu seçin.'); return; }
+
+    var msg = 'Merhaba! Ahmet & Ayşe düğünü için katılım onayım:\n\n'
+            + '👤 Ad: ' + name + '\n'
+            + '👥 Kişi: ' + count + '\n'
+            + '📌 Durum: ' + status
+            + (note ? '\n💬 Not: ' + note : '');
+
+    window.open('https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(msg), '_blank');
+
+    document.getElementById('rsvp-form').style.display = 'none';
+    document.getElementById('rsvp-done').style.display = 'block';
+  }
+
+  /* ══ MÜZİK — YouTube hidden iframe ══
+     Kullanıcı overlay'e dokunduğu anda (user gesture) iframe oluşturulur.
+     autoplay=1 + playsinline=1 → mobil dahil otomatik çalar.        */
+  var musicIframe = null;
+  var musicPlaying = false;
+
+  function startMusic() {
+    var iframe = document.createElement('iframe');
+    iframe.src = 'https://www.youtube.com/embed/u2ah9tWTkmk'
+               + '?autoplay=1&loop=1&playlist=u2ah9tWTkmk'
+               + '&controls=0&mute=0&rel=0&playsinline=1&enablejsapi=1';
+    iframe.allow = 'autoplay; encrypted-media';
+    iframe.setAttribute('playsinline', '1');
+    iframe.style.cssText = 'position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;z-index:-1;top:0;left:0;';
+    document.body.appendChild(iframe);
+    musicIframe  = iframe;
+    musicPlaying = true;
+    document.getElementById('music-bar').classList.add('visible');
+  }
+
+  function toggleMusic() {
+    if (!musicIframe) return;
+    var cmd = musicPlaying ? 'pauseVideo' : 'playVideo';
+    musicIframe.contentWindow.postMessage(
+      JSON.stringify({event:'command', func:cmd, args:[]}), '*'
+    );
+    musicPlaying = !musicPlaying;
+    document.getElementById('m-toggle').textContent = musicPlaying ? '⏸' : '▶';
+  }
+
+  /* ══ OVERLAY AÇ ══ */
+  var overlay = document.getElementById('overlay');
+  var main    = document.getElementById('main');
+  var fab     = document.getElementById('music-fab');
+  var done    = false;
+
+  function openInvitation() {
+    if (done) return; done = true;
+    overlay.classList.add('open');
+    main.classList.add('visible');
+
+    // Müzik — overlay'e dokunuş = user gesture → YouTube otomatik çalar
+    startMusic();
+
+    // Fade-up animasyonlar
+    document.querySelectorAll('.fu').forEach(function(el, i) {
+      setTimeout(function() { el.classList.add('in'); }, 300 + i * 150);
+    });
+  }
+
+  overlay.addEventListener('click', openInvitation);
+  overlay.addEventListener('touchend', function(e) { e.preventDefault(); openInvitation(); }, { passive: false });
+
+  /* ══ COUNTDOWN ══ */
+  var wedding = new Date('2026-09-26T19:00:00+03:00');
+  function tick() {
+    var diff = wedding - Date.now();
+    if (diff <= 0) {
+      document.querySelector('.cd-wrap').innerHTML =
+        '<p style="font-family:\'Cormorant Garamond\',serif;font-style:italic;font-size:22px;color:#C5A25A;text-align:center">Tebrikler! ✦</p>';
+      return;
+    }
+    var f = function(n) { return String(n).padStart(2,'0'); };
+    document.getElementById('cd-d').textContent = f(Math.floor(diff/86400000));
+    document.getElementById('cd-h').textContent = f(Math.floor(diff%86400000/3600000));
+    document.getElementById('cd-m').textContent = f(Math.floor(diff%3600000/60000));
+    document.getElementById('cd-s').textContent = f(Math.floor(diff%60000/1000));
+  }
+  tick(); setInterval(tick, 1000);
+</script>
+</body>
+</html>
