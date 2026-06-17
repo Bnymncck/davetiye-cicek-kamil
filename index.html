@@ -567,44 +567,32 @@
   /* ══ MÜZİK — YouTube hidden iframe ══
      Kullanıcı overlay'e dokunduğu anda (user gesture) iframe oluşturulur.
      autoplay=1 + playsinline=1 → mobil dahil otomatik çalar.        */
-  var musicIframe = null;
+  /* ══ MÜZİK — HTML5 Audio (iOS + Android garantili) ══ */
+  var audio = new Audio('music.mp3');
+  audio.loop = true;
+  audio.volume = 0.8;
   var musicPlaying = false;
 
   function startMusic() {
-    var iframe = document.createElement('iframe');
-    // Önce mute=1 ile başlatıyoruz — iOS dahil her yerde autoplay çalışır
-    // Ardından 1.5sn sonra unmute ediyoruz (YT IFrame API postMessage)
-    iframe.src = 'https://www.youtube.com/embed/u2ah9tWTkmk'
-               + '?autoplay=1&loop=1&playlist=u2ah9tWTkmk'
-               + '&controls=0&mute=1&rel=0&playsinline=1&enablejsapi=1';
-    iframe.allow = 'autoplay; encrypted-media';
-    iframe.setAttribute('playsinline', '1');
-    // Gerçek boyut ama sayfa dışında — YouTube gizli embed algılamaz
-    iframe.style.cssText = 'position:fixed;width:320px;height:180px;'
-      + 'left:-9999px;top:-9999px;pointer-events:none;z-index:-1;';
-    document.body.appendChild(iframe);
-    musicIframe  = iframe;
-    musicPlaying = true;
-    document.getElementById('music-bar').classList.add('visible');
-    // YT player yüklendikten sonra sesi aç
-    setTimeout(function() {
-      if (musicIframe && musicIframe.contentWindow) {
-        musicIframe.contentWindow.postMessage(
-          JSON.stringify({event:'command', func:'unMute', args:[]}), '*');
-        musicIframe.contentWindow.postMessage(
-          JSON.stringify({event:'command', func:'setVolume', args:[80]}), '*');
-      }
-    }, 1800);
+    audio.play().then(function() {
+      musicPlaying = true;
+      document.getElementById('music-bar').classList.add('visible');
+    }).catch(function() {
+      // Sessiz kaldıysa music-bar'ı yine de göster
+      document.getElementById('music-bar').classList.add('visible');
+    });
   }
 
   function toggleMusic() {
-    if (!musicIframe) return;
-    var cmd = musicPlaying ? 'pauseVideo' : 'playVideo';
-    musicIframe.contentWindow.postMessage(
-      JSON.stringify({event:'command', func:cmd, args:[]}), '*'
-    );
-    musicPlaying = !musicPlaying;
-    document.getElementById('m-toggle').textContent = musicPlaying ? '⏸' : '▶';
+    if (musicPlaying) {
+      audio.pause();
+      musicPlaying = false;
+      document.getElementById('m-toggle').textContent = '▶';
+    } else {
+      audio.play();
+      musicPlaying = true;
+      document.getElementById('m-toggle').textContent = '⏸';
+    }
   }
 
   /* ══ OVERLAY AÇ ══ */
