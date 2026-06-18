@@ -212,9 +212,25 @@
       font-size: clamp(28px, 7vw, 42px); line-height: 1.2; color: var(--goldl);
     }
     .nf-amp { font-style: italic; color: var(--gold); display: block; margin: 2px 0; }
-    .evleniyor {
-      font-family: 'Cormorant Garamond', serif; font-style: italic;
-      font-size: 18px; color: rgba(197,162,90,0.7);
+    .parents-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: 20px; width: 100%; padding: 4px 0;
+    }
+    .parent-col {
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+      flex: 1;
+    }
+    .parent-name {
+      font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300;
+      font-size: clamp(14px, 3.5vw, 18px); color: rgba(232,213,163,0.85); text-align: center;
+    }
+    .parent-family {
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: clamp(9px, 2vw, 11px); letter-spacing: 3px; text-transform: uppercase;
+      color: rgba(197,162,90,0.6); text-align: center;
+    }
+    .parent-sep {
+      color: var(--gold); font-size: 10px; opacity: 0.5; flex-shrink: 0;
     }
 
     /* ── Cards ── */
@@ -435,7 +451,17 @@
         <span class="nf-amp">&</span>
         Ayşe Şevval Kamiloğlu
       </div>
-      <span class="evleniyor">evleniyor</span>
+      <div class="parents-row">
+        <div class="parent-col">
+          <span class="parent-name">Nurettin &amp; Şükran</span>
+          <span class="parent-family">Çiçek</span>
+        </div>
+        <div class="parent-sep">✦</div>
+        <div class="parent-col">
+          <span class="parent-name">Ali &amp; Fatma</span>
+          <span class="parent-family">Kamiloğlu</span>
+        </div>
+      </div>
       <svg class="orn" width="180" height="16" viewBox="0 0 180 16">
         <line x1="0" y1="8" x2="76" y2="8" stroke="#C5A25A" stroke-width="0.6"/>
         <polygon points="90,1 97,8 90,15 83,8" fill="#C5A25A"/>
@@ -496,39 +522,6 @@
    </div><!-- /page-wrap -->
   </div><!-- /content -->
 
-  <!-- RSVP -->
-  <div style="background:var(--cream2); padding: 0 0 8px;">
-  <div class="page-wrap" style="margin-top:0; background:var(--cream2);">
-  <section class="rsvp fu" style="margin:0; padding: 56px 24px 64px;">
-    <span class="lbl">Katılım Onayı</span>
-    <h2 class="rsvp-title">Katılıyor musunuz?</h2>
-    <p class="rsvp-sub">
-      Lütfen 7 Eylül 2026 tarihinden önce<br>katılım durumunuzu onaylayınız.
-    </p>
-
-    <div class="rsvp-form" id="rsvp-form">
-      <input class="rsvp-input" id="rv-name" type="text" placeholder="Ad Soyad *" required>
-      <div class="row-2">
-        <input class="rsvp-input" id="rv-count" type="number" min="1" max="20" value="1" placeholder="Kişi Sayısı">
-        <select class="rsvp-select" id="rv-status">
-          <option value="">-- Katılım Durumu --</option>
-          <option value="✓ Katılacağım">✓ Katılacağım</option>
-          <option value="✗ Katılamayacağım">✗ Katılamayacağım</option>
-          <option value="? Belki Katılabilirim">? Belki Katılabilirim</option>
-        </select>
-      </div>
-      <textarea class="rsvp-input" id="rv-note" rows="3" placeholder="Notunuz (isteğe bağlı)" style="resize:none"></textarea>
-      <button class="rsvp-btn" onclick="sendRSVP()">O N A Y I &nbsp; G Ö N D E R</button>
-    </div>
-
-    <div id="rsvp-done">
-      ✦ &ensp; Teşekkürler, kaydınız alındı. Görüşmek üzere! &ensp; ✦
-    </div>
-  </section>
-
-  </section>
-  </div><!-- /page-wrap rsvp -->
-  </div>
 
   <!-- Footer -->
   <footer class="footer fu">
