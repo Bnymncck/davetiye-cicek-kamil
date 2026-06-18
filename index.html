@@ -40,9 +40,25 @@
       position: fixed; inset: 0; z-index: 9000;
       display: flex; align-items: center; justify-content: center;
       cursor: pointer;
-      background: linear-gradient(155deg, #FAF7F1 0%, #EDE3CC 100%);
+      background: #0D0906;
       transition: transform 1.1s cubic-bezier(0.76, 0, 0.24, 1),
                   opacity   1.1s ease;
+      overflow: hidden;
+    }
+
+    /* Blurlu arka plan fotoğrafı */
+    #overlay-photo {
+      position: absolute; inset: -20px; z-index: 0;
+      background: url('couple.jpg') center 20% / cover no-repeat;
+      filter: blur(14px);
+      transform: scale(1.08);
+    }
+    /* Krem/koyu örtü — metin okunabilirliği */
+    #overlay-veil {
+      position: absolute; inset: 0; z-index: 0;
+      background: linear-gradient(155deg,
+        rgba(250,247,241,0.60) 0%,
+        rgba(20,12,4,0.45) 100%);
     }
     #overlay.open { transform: translateY(-100%); opacity: 0; pointer-events: none; }
 
@@ -362,6 +378,8 @@
      OPENING OVERLAY
 ══════════════════════════════════════ -->
 <div id="overlay">
+  <div id="overlay-photo"></div>
+  <div id="overlay-veil"></div>
   <div class="o-card">
     <span class="o-small">Mersin &nbsp;·&nbsp; 2026</span>
 
