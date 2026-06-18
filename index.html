@@ -60,12 +60,12 @@
       -webkit-transform: scale(1.08);
       transform: scale(1.08);
     }
-    /* Krem örtü — metin okunabilirliği */
+    /* Koyu örtü — referans gibi sinematik */
     #overlay-veil {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
       z-index: 1;
-      background: rgba(250,247,241,0.55);
+      background: rgba(8, 4, 1, 0.68);
     }
     #overlay.open { transform: translateY(-100%); opacity: 0; pointer-events: none; }
 
@@ -104,12 +104,12 @@
     }
     .o-names {
       font-family: 'Cormorant Garamond', serif; font-style: italic; font-weight: 300;
-      font-size: clamp(72px, 18vw, 110px); line-height: 0.88; color: var(--text);
+      font-size: clamp(72px, 18vw, 110px); line-height: 0.88; color: var(--goldl);
     }
     .o-amp { font-style: italic; color: var(--gold); display: block; margin: 4px 0; font-size: 0.45em; }
     .o-date {
       font-family: 'Raleway', sans-serif; font-weight: 300;
-      font-size: 11px; letter-spacing: 5px; color: var(--sub);
+      font-size: 11px; letter-spacing: 5px; color: rgba(232,213,163,0.75);
     }
     .seal { width: 72px; height: 72px; }
     .seal-svg { animation: sealPulse 2.8s ease-in-out infinite; }
@@ -119,7 +119,7 @@
     }
     .tap-hint {
       font-family: 'Cormorant Garamond', serif; font-style: italic;
-      font-size: 15px; color: var(--sub);
+      font-size: 15px; color: rgba(197,162,90,0.8);
       animation: tapPulse 2.5s ease-in-out infinite;
     }
     @keyframes tapPulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
