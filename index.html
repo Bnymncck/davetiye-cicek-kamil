@@ -48,17 +48,24 @@
 
     /* Blurlu arka plan fotoğrafı */
     #overlay-photo {
-      position: absolute; inset: -20px; z-index: 0;
-      background: url('couple.jpg') center 20% / cover no-repeat;
-      filter: blur(14px);
+      position: absolute;
+      top: -20px; left: -20px; right: -20px; bottom: -20px;
+      z-index: 0;
+      background-image: url('couple.jpg');
+      background-size: cover;
+      background-position: center top;
+      background-repeat: no-repeat;
+      -webkit-filter: blur(12px);
+      filter: blur(12px);
+      -webkit-transform: scale(1.08);
       transform: scale(1.08);
     }
-    /* Krem/koyu örtü — metin okunabilirliği */
+    /* Krem örtü — metin okunabilirliği */
     #overlay-veil {
-      position: absolute; inset: 0; z-index: 0;
-      background: linear-gradient(155deg,
-        rgba(250,247,241,0.60) 0%,
-        rgba(20,12,4,0.45) 100%);
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      z-index: 1;
+      background: rgba(250,247,241,0.55);
     }
     #overlay.open { transform: translateY(-100%); opacity: 0; pointer-events: none; }
 
@@ -69,7 +76,7 @@
       inset: 18px;
       border: 1.2px solid rgba(197,162,90,0.65);
       pointer-events: none;
-      z-index: 1;
+      z-index: 3;
     }
     /* İç çerçeve */
     #overlay::after {
@@ -78,7 +85,7 @@
       inset: 24px;
       border: 0.6px solid rgba(197,162,90,0.35);
       pointer-events: none;
-      z-index: 1;
+      z-index: 3;
     }
 
     .o-card {
@@ -89,7 +96,7 @@
       border: 1px solid rgba(197,162,90,0.55);
       outline: 1px solid rgba(197,162,90,0.25);
       outline-offset: -7px;
-      position: relative; z-index: 2;
+      position: relative; z-index: 4;
     }
     .o-small {
       font-family: 'Raleway', sans-serif; font-weight: 300;
