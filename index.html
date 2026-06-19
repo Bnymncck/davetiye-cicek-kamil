@@ -493,6 +493,20 @@
       </div>
     </div>
 
+    <!-- Düğün Countdown -->
+    <div class="cd-wrap fu">
+      <span class="lbl">Düğüne kalan</span>
+      <div class="cd-row">
+        <div class="cd-unit"><span class="cd-num" id="cd-d">--</span><span class="cd-lbl">Gün</span></div>
+        <span class="cd-sep">·</span>
+        <div class="cd-unit"><span class="cd-num" id="cd-h">--</span><span class="cd-lbl">Saat</span></div>
+        <span class="cd-sep">·</span>
+        <div class="cd-unit"><span class="cd-num" id="cd-m">--</span><span class="cd-lbl">Dakika</span></div>
+        <span class="cd-sep">·</span>
+        <div class="cd-unit"><span class="cd-num" id="cd-s">--</span><span class="cd-lbl">Saniye</span></div>
+      </div>
+    </div>
+
     <div class="divider"><div class="dvl"></div><div class="dvd"></div><div class="dvl"></div></div>
 
     <!-- Kına Card -->
@@ -512,17 +526,17 @@
       </div>
     </div>
 
-    <!-- Countdown -->
-    <div class="cd-wrap fu">
-      <span class="lbl">Düğüne kalan</span>
+    <!-- Kına Countdown -->
+    <div class="cd-wrap fu" id="kina-cd-wrap">
+      <span class="lbl" style="color:#C4875A;">Kınaya kalan</span>
       <div class="cd-row">
-        <div class="cd-unit"><span class="cd-num" id="cd-d">--</span><span class="cd-lbl">Gün</span></div>
-        <span class="cd-sep">·</span>
-        <div class="cd-unit"><span class="cd-num" id="cd-h">--</span><span class="cd-lbl">Saat</span></div>
-        <span class="cd-sep">·</span>
-        <div class="cd-unit"><span class="cd-num" id="cd-m">--</span><span class="cd-lbl">Dakika</span></div>
-        <span class="cd-sep">·</span>
-        <div class="cd-unit"><span class="cd-num" id="cd-s">--</span><span class="cd-lbl">Saniye</span></div>
+        <div class="cd-unit"><span class="cd-num" id="kcd-d" style="color:#C4875A;">--</span><span class="cd-lbl">Gün</span></div>
+        <span class="cd-sep" style="color:#C4875A;">·</span>
+        <div class="cd-unit"><span class="cd-num" id="kcd-h" style="color:#C4875A;">--</span><span class="cd-lbl">Saat</span></div>
+        <span class="cd-sep" style="color:#C4875A;">·</span>
+        <div class="cd-unit"><span class="cd-num" id="kcd-m" style="color:#C4875A;">--</span><span class="cd-lbl">Dakika</span></div>
+        <span class="cd-sep" style="color:#C4875A;">·</span>
+        <div class="cd-unit"><span class="cd-num" id="kcd-s" style="color:#C4875A;">--</span><span class="cd-lbl">Saniye</span></div>
       </div>
     </div>
 
@@ -633,7 +647,7 @@
   overlay.addEventListener('click', openInvitation);
   overlay.addEventListener('touchend', function(e) { e.preventDefault(); openInvitation(); }, { passive: false });
 
-  /* ══ COUNTDOWN ══ */
+  /* ══ COUNTDOWN — Düğün ══ */
   var wedding = new Date('2026-09-26T19:00:00+03:00');
   function tick() {
     var diff = wedding - Date.now();
@@ -649,6 +663,23 @@
     document.getElementById('cd-s').textContent = f(Math.floor(diff%60000/1000));
   }
   tick(); setInterval(tick, 1000);
+
+  /* ══ COUNTDOWN — Kına ══ */
+  var kina = new Date('2026-08-02T20:00:00+03:00');
+  function tickKina() {
+    var diff = kina - Date.now();
+    if (diff <= 0) {
+      document.getElementById('kina-cd-wrap').innerHTML =
+        '<p style="font-family:\'Cormorant Garamond\',serif;font-style:italic;font-size:22px;color:#C4875A;text-align:center">Kınaya Hazır! ✦</p>';
+      return;
+    }
+    var f = function(n) { return String(n).padStart(2,'0'); };
+    document.getElementById('kcd-d').textContent = f(Math.floor(diff/86400000));
+    document.getElementById('kcd-h').textContent = f(Math.floor(diff%86400000/3600000));
+    document.getElementById('kcd-m').textContent = f(Math.floor(diff%3600000/60000));
+    document.getElementById('kcd-s').textContent = f(Math.floor(diff%60000/1000));
+  }
+  tickKina(); setInterval(tickKina, 1000);
 </script>
 </body>
 </html>
